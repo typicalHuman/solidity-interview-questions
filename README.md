@@ -359,7 +359,7 @@ _Reference_: https://ethereum.stackexchange.com/questions/58981/what-is-the-maxi
 
 Fixed interest rate - remains the same for the whole period (of loan for example), Variable interest fixed rate - can change during the period. Variable rates involve more risks, but they can save you more money or you will lose more money if some of the conditions would change (like economic ones or some internal policies).
 
-_Reference_: https://www.youtube.com/watch?v=wkscvZNauJU
+_Reference_: https://www.investopedia.com/ask/answers/07/fixed-variable.asp
 
 </details>
 
