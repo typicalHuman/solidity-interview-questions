@@ -364,3 +364,118 @@ _Reference_: https://www.investopedia.com/ask/answers/07/fixed-variable.asp
 </details>
 
 <br>
+
+## Medium
+
+<details open>
+<summary><b><font size="+1">1. What is the difference between transfer and send? Why should they not be used?</font></b></summary>
+
+`transfer` throws an error on failure, `send` returns false on failure. It's better to use `call` because `transfer` and `send` have hardcoded 2300 gas and if some of the EVM opcodes start using more gas - all transfers and calls might not work anymore.
+
+_Reference_: https://docs.soliditylang.org/en/v0.8.24/cheatsheet.html#members-of-address, https://consensys.io/diligence/blog/2019/09/stop-using-soliditys-transfer-now/
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">2. How do you write a gas-efficient for loop in Solidity?</font></b></summary>
+
+```js
+uint256 length = array.length;
+for(uint256 i; i < length;){
+ unchecked{++i}
+}
+```
+
+_Reference_: https://gist.github.com/grGred/9bab8b9bad0cd42fc23d4e31e7347144#for-loops-improvement
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">3. What is a storage collision in a proxy contract?</font></b></summary>
+
+Storage collision is a mechanism of proxy contracts when storage states from the source contract collide with the new proxy contract and the memory states are passed on to the new contract. Small example: we have a contract with the first variable uint256 a = 3; if we are going to update the proxy and the first state variable of the proxy is also uint256 - then this variable will also store the number "3", and that's why it's important not to change the order of states when dealing with proxy updates.
+
+_Reference_: https://ethereum-blockchain-developer.com/110-upgrade-smart-contracts/06-storage-collisions/
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">4. What is the difference between abi.encode and abi.encodePacked?</font></b></summary>
+
+`abi.encode` simply encodes the arguments to `bytes32` format (if the value is not big enough for `bytes32` it will be adjusted with zeros), `abi.encodePacked` encodes all the values compactly without filling empty bytes with zeros, and allows to encode multiple values in one `bytes32` slot.
+
+_Reference_: https://docs.soliditylang.org/en/v0.8.24/abi-spec.html#non-standard-packed-mode
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">5. uint8, uint32, uint64, uint128, uint256 are all valid uint sizes. Are there others?</font></b></summary>
+
+Yes, for example uint16, uint40, uint80, because uint type has a step of 8.
+
+_Reference_: https://docs.soliditylang.org/en/v0.8.24/grammar.html#a4.SolidityLexer.UnsignedIntegerType
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">6. What changed with block.timestamp before and after proof of stake?</font></b></summary>
+
+Before the merge, `block.timestamp` could be manipulated by miners, but after the merge, the block is mined exactly every 12 seconds, so `block.timestamp` is predictable.
+
+_Reference_: https://ethereum.stackexchange.com/questions/135445/miner-modifiability-of-block-timestamp-after-the-merge
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">7. What is frontrunning?</font></b></summary>
+
+Frontrunning is a method of placing your transaction ahead of some targeted transaction, often the purpose of frontrunning is to make a profit. For example: Bot sees that some whale is buying a large amount of some token (and it will defintely drive the price up because there would be less liquidity of that token in some pool or market), so it sends its own buy transaction with higher gas because it wants to buy tokens for lower price. Then the bot can sell those tokens at a higher price after the whale's buy transaction, because the price has gone up. This is called a Sanwich attack.
+
+_Reference_: https://support.uniswap.org/hc/en-us/articles/19387081481741-What-is-a-sandwich-attack
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">8. What is a commit-reveal scheme and when would you use it?</font></b></summary>
+
+Commit-reveal scheme is a technique used to protect against frontrunning, where you upload some sensitive value to the smart contract in an encrypted format, and then reveal it using some kind of hash that verifies that you actually put that value in and not some other value. Also, commit-reveal schemes often have logic to close commits for some time, so that frontrunners cannot commit any useful data in the last few seconds. One of the use-cases might be an implementation of the rock-paper-scissors game.
+
+_Reference_: https://medium.com/coinmonks/commit-reveal-scheme-in-solidity-c06eba4091bb
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">9. Under what circumstances could abi.encodePacked create a vulnerability?</font></b></summary>
+
+If the values that you are trying to encode are dynamic arrays - this could affect the end result, for example `abi.encodePacked([a,b], [c,d])` would have the same hash as a `abi.encodePacked([a,b,c], [d])`.
+_Reference_: https://swcregistry.io/docs/SWC-133/
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">10. How does Ethereum determine the BASEFEE in EIP-1559?</font></b></summary>
+
+It's based on network demand and the fullness of the block, if the block was full before - baseFee would go up (it can't go higher/lower than 12.5% compared to the previous one).
+
+_Reference_: https://www.blocknative.com/blog/eip-1559-fees
+
+</details>
+
+<br>
