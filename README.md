@@ -479,3 +479,107 @@ _Reference_: https://www.blocknative.com/blog/eip-1559-fees
 </details>
 
 <br>
+<details open>
+<summary><b><font size="+1">11. What is the difference between a cold read and a warm read?</font></b></summary>
+
+The first time you read a variable from memory - it's a cold read, all reads after the first are warm.
+
+_Reference_: https://ethereum.stackexchange.com/a/149670/99105
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">12. How does an AMM price assets?</font></b></summary>
+
+Based on the `x*y=k` formula, the price is basically based on the reserves of the tokens, if you had a pool of 30k USDT and 10 ETH this means that the correlation is 30,000/10 = 3000 USDT per ETH, if the reserve of USDT or ETH would change and it won't be equal to the actual price - arbitrage bots will use this opportunity to regulate the price (because if your asset costs more or less than a market price - bots can abuse it in order to get profit).
+
+_Reference_: https://academy.binance.com/en/articles/what-is-an-automated-market-maker-amm
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">13. What is a function selector clash in a proxy and how does it happen?</font></b></summary>
+
+Function clashing is an exploit that allows some functions to be executed through the proxy that the user didn't intend to execute, by creating a function with the same signature. For example, we have a malicious contract owner (who can upgrade the proxy), if he creates a function on the proxy with the exact signature that the user will use later - it will be executed instead of the function that the user wanted to execute.
+
+_Reference_: https://forum.openzeppelin.com/t/beware-of-the-proxy-learn-how-to-exploit-function-clashing/1070
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">14. What is the effect on gas of making a function payable?</font></b></summary>
+
+Actually, all functions are payable by default in EVM, so not specifying the `payable` keyword will add opcodes to reverse execution if the `msg.value` is greater than zero. So the payable function is cheaper than the non-payable one.
+
+_Reference_: https://coinsbench.com/solidity-payable-vs-regular-functions-a-gas-usage-comparison-b4a387fe860d
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">15. What is a signature replay attack?</font></b></summary>
+
+The signature replay attack is an attack that allows some functionality to be performed multiple times using a signature, even if it was designed to be performed once, or allows someone else to perform functionality using the other person's signature. It can be solved by using the `msg.sender` check and also adding `nonce` logic to the code so that the signature can't be used more than once.
+
+_Reference_: https://solidity-by-example.org/hacks/signature-replay/
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">16. What is gas griefing?</font></b></summary>
+
+Gas griefing is an attack technique that allows a malicious user to prevent users from executing transactions when there's no external call success check. It can be done by providing just enough gas to execute a top-level transaction, and then censoring the data so that the original user can't execute it later.
+
+_Reference_: https://swcregistry.io/docs/SWC-126/
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">17. How would you design a game of rock-paper-scissors in a smart contract such that players cannot cheat?</font></b></summary>
+
+It can be done by using commit-reveal scheme.
+
+_Reference_: https://github.com/ojroques/ethereum-rockpaperscissors
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">18. What is the free memory pointer and where is it stored?</font></b></summary>
+
+The free memory pointer is the pointer that shows where the last occupied byte of memory is, it's used when you create a new variable for example - it shows where to store this new variable.
+
+_Reference_: https://ethereum.stackexchange.com/questions/137729/opcode-free-memory-pointer-and-offset
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">19. What function modifiers are valid for interfaces?</font></b></summary>
+
+All declared functions must be `external`
+
+_Reference_: https://solidity-by-example.org/interface/
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">20. What is the difference between memory and calldata in a function argument?</font></b></summary>
+
+`memory` parameters are mutable and `calldata` parameters are immutable.
+
+_Reference_: https://ethereum.stackexchange.com/questions/74442/when-should-i-use-calldata-and-when-should-i-use-memory
+
+</details>
+
+<br>
+
