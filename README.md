@@ -583,3 +583,127 @@ _Reference_: https://ethereum.stackexchange.com/questions/74442/when-should-i-us
 
 <br>
 
+<details open>
+<summary><b><font size="+1">21. Describe the three types of storage gas costs.</font></b></summary>
+
+1. Store a new variable: 20,000 gas
+2. Updating state: 5,000 gas
+3. Reading state: 200 gas
+
+_Reference_: https://hacken.io/discover/solidity-gas-optimization/
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">22. Why shouldn’t upgradeable contracts use the constructor?</font></b></summary>
+
+Because the constructor is called only once, and this code is not part of the runtime bytecode of a deployed smart contract. So this context won't be passed to the proxy contract. So it's better to use an `initializer` method instead.
+
+_Reference_: https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies#the-constructor-caveat
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">23. What is the difference between UUPS and the Transparent Upgradeable Proxy pattern?</font></b></summary>
+
+UUPS and Transparent Upgradeable Proxy are both transparent proxy patterns (https://blog.openzeppelin.com/the-transparent-proxy-pattern), but UUPS is cheaper because proxy management functions for proxy are not being duplicated in the proxy implementations.
+
+_Reference_: https://docs.openzeppelin.com/contracts/4.x/api/proxy#transparent-vs-uups
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">24. If a contract delegatecalls an empty address or an implementation that was previously self-destructed, what happens? What if it is a regular call instead of a delegatecall?</font></b></summary>
+
+It will return true, because even though the storage is empty for that address, the EVM still recognizes the existence of this address and decides that the `call`/`delegatecall` was successful.
+
+_Reference_: https://medium.com/@solidity101/understanding-contract-delegation-in-solidity-handling-selfdestruct-scenarios-%EF%B8%8F-37fe2f4198ee
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">25. What danger do ERC777 tokens pose?</font></b></summary>
+
+The killer feature of the ERC777 standard is the receive hook, which allows you to react to the incoming tokens, similar to onERC721Received for NFT. This can be handy, but it also opens up the possibility of reentrancy attacks by giving the attacker another way to re-enter the contract.
+
+_Reference_: https://forum.openzeppelin.com/t/can-sombody-explain-why-erc777-was-removed/38105
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">26. According to the solidity style guide, how should functions be ordered?</font></b></summary>
+
+- constructor
+- receive function (if exists)
+- fallback function (if exists)
+- external
+- public
+- internal
+- private
+
+Within a grouping, place the `view` and `pure` functions last.
+
+_Reference_: https://docs.soliditylang.org/en/v0.8.24/style-guide.html#order-of-functions
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">27. According to the solidity style guide, how should function modifiers be ordered?</font></b></summary>
+
+The modifier order for a function should be:
+
+- Visibility (public,private,external,internal)
+- Mutability (pure,view) + payable
+- `virtual`/`override`
+- Custom modifiers
+
+_Reference_: https://docs.soliditylang.org/en/v0.8.24/style-guide.html#function-declaration
+
+</details>
+
+<br>
+
+<br>
+<details open>
+<summary><b><font size="+1">28. What is a bonding curve?</font></b></summary>
+
+AMM mechanism for checking correlation between token supplies and calculating relative price for them.
+
+![Curve](./images/boundingCureve.avif)
+
+_Reference_: https://iq.wiki/wiki/bonding-curve
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">29. How does safeMint differ from mint in the OpenZeppelin ERC721 implementation?</font></b></summary>
+
+`safeMint` checks 2 things: 1. the existence of `tokenId` (it won't mint the same token twice), 2. if `to` is a contract - it should implement the `onERC721Received` function. `mint` function doesn't check these conditions.
+
+_Reference_: https://docs.openzeppelin.com/contracts/3.x/api/token/erc721#ERC721-_safeMint-address-uint256-
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">30. What keywords are provided in Solidity to measure time?</font></b></summary>
+
+- 1 == 1 seconds
+- 1 minutes == 60 seconds
+- 1 hours == 60 minutes
+- 1 days == 24 hours
+- 1 weeks == 7 days
+
+_Reference_: https://docs.soliditylang.org/en/v0.8.24/units-and-global-variables.html#time-units
+
+</details>
+
+<br>
