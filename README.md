@@ -707,3 +707,195 @@ _Reference_: https://docs.soliditylang.org/en/v0.8.24/units-and-global-variables
 </details>
 
 <br>
+
+<details open>
+<summary><b><font size="+1">31. What is a sandwich attack?</font></b></summary>
+
+Inserting a transaction before and after a targeted transaction in order to make a profit. Example: Bot sees that some whale is buying a large amount of some token (and it will defintely drive the price up because there would be less liquidity of that token in some pool or market), so it sends its own buy transaction with higher gas because it wants to buy tokens for lower price. Then the bot can sell those tokens at a higher price after the whale's buy transaction, because the price has gone up. This is called a Sanwich attack.
+
+_Reference_: https://support.uniswap.org/hc/en-us/articles/19387081481741-What-is-a-sandwich-attack
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">32. If a delegatecall is made to a function that reverts, what does the delegatecall do?</font></b></summary>
+
+It will return `false` and won't revert the calling function.
+
+_Reference_: https://docs.soliditylang.org/en/v0.8.24/security-considerations.html#call-stack-depth
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">33. What is a gas efficient alternative to multiplying and dividing by a power of two?</font></b></summary>
+
+You can shift right/left instead of division/multiplication. While the DIV opcode uses 5 gas, the SHR opcode only uses 3 gas.
+
+_Reference_: https://betterprogramming.pub/solidity-gas-optimizations-and-tricks-2bcee0f9f1f2
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">34. How large a uint can be packed with an address in one slot?</font></b></summary>
+
+1 slot size = 32 bytes, address - 20 bytes, we have 12 free bytes - 8 \* 12 = 96, uint96.max = 79228162514264337593543950335
+
+_Reference_: https://stackoverflow.com/questions/72752086/how-many-state-bytes-will-contract-address-variable-consume-in-solidity
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">35. Which operations give a partial refund of gas?</font></b></summary>
+
+1 slot size = 32 bytes, address - 20 bytes, we have 12 free bytes - 8 \* 12 = 96, uint96.max = 79228162514264337593543950335
+
+_Reference_: https://stackoverflow.com/questions/72752086/how-many-state-bytes-will-contract-address-variable-consume-in-solidity
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">36. What is ERC165 used for?</font></b></summary>
+
+You can use it to check if the smart contract implements the interface and certain functions or not. It can be useful if you need to check if the contract is an ERC20 token or not. ERc165 uses `supportsInterface(bytes4 interfaceID)` for this purpose.
+
+_Reference_: https://eips.ethereum.org/EIPS/eip-165
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">37. If a proxy makes a delegatecall to A, and A does address(this).balance, whose balance is returned, the proxy's or A?</font></b></summary>
+
+`address(this)` will return the address of the proxy, so it will return the proxy's balance.
+
+_Reference_: https://forum.openzeppelin.com/t/proxy-contract-what-is-msg-sender-and-address-this-in-logic-contract/25824/3
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">38. What is a slippage parameter useful for?</font></b></summary>
+
+Slippage is a limit that shows how much the price could change during the trade. It's used in cases where liquidity is very volatile and you don't want to buy tokens at a much higher price or sell them at a much lower price than you wanted.
+
+_Reference_: https://uniswapv3book.com/milestone_3/slippage-protection.html#:~:text=Slippage%20is%20a%20very%20important,when%20the%20swap%20is%20executed.
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">39. What does ERC721A do to reduce mint costs? What is the tradeoff?</font></b></summary>
+
+ERC721A is a new implementation of ERC721 pattern but with some upsides and downsides:
+Upsides:
+
+- mints are much cheaper
+
+Downsides:
+
+- transfers are more expensive
+
+Mint optimization technique: it doesn't update all default mappings with info about token owner on each mint, it does it once during batch mint. Because of this, you don't have information about the tokenId owner, so you have to iterate the array first to find the owner of the token.
+
+_Reference_: https://www.alchemy.com/blog/erc721-vs-erc721a-batch-minting-nfts
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">40. Why doesn't Solidity support floating point arithmetic?</font></b></summary>
+
+One of the main reasons is the fact that fixed-point arithmetic is not very predictable and can lead to forks on different nodes, which is why EVM itself doesn't want to deal with it, but Solidity has started to implement floating-point numbers using the same technique used in the ERC20 tokens - https://docs.soliditylang.org/en/develop/types.html#fixed-point-numbers.
+
+_Reference_: https://ethereum.stackexchange.com/questions/87234/why-was-support-for-floating-point-numbers-not-natively-added-to-solidity-or-et
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">41. What is TWAP?</font></b></summary>
+
+TWAP (Time-Weighted Average Price) - is a pricing algorithm used to calculate the price of an asset for a period of time. It can be done by taking different prices at equally distant points in time and then dividing the sum of them by the length of the points:
+
+For example, imagine we wanted to calculate the TWAP of an asset over one minute using 15-second price point intervals. If the prices were $100 at zero seconds, $102 at 15 seconds, $101 at 30 seconds, $98 at 45 seconds, and $103 at 60 seconds, then to calculate the TWAP we would sum all price points (100, 102, 101, 99, 103) and then divide them by the number of timepoints (five). In this example, the TWAP is $101.
+
+_Reference_: https://chain.link/education-hub/twap-vs-vwap#:~:text=TWAP%20stands%20for%20%E2%80%9Ctime%2Dweighted,be%20used%20in%20other%20protocols.
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">41. How does Compound Finance calculate utilization?</font></b></summary>
+
+Utilization - percentage of actually borrowed funds in the lending pool compared to the total funds available for borrowing.
+
+```js
+Utilization = TotalBorrows / TotalSupply;
+```
+
+_Reference_: https://docs.compound.finance/interest-rates/#get-utilization
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">42. If a delegatecall is made to a function that reads from an immutable variable, what will the value be?</font></b></summary>
+
+It will return the value of immutable variable.
+
+_POC_:
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+contract FirstContract {
+    function doDelegate(address contr) external returns(bytes memory){
+        (, bytes memory data) = address(contr).delegatecall(abi.encodeWithSignature("doCall()"));
+        return data; // 0x00..1e = 30
+    }
+
+}
+
+contract secondContract{
+    uint256 immutable VALUE = 30;
+
+    function doCall() external returns(uint256){
+        return VALUE;
+    }
+}
+```
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">44. What is a fee-on-transfer token?</font></b></summary>
+
+Fee-on-transfer token is a type of ERC20 token that takes a small fee after tokens are transferred.
+
+_Reference:_ https://help.1inch.io/en/articles/5651059-what-is-a-fee-on-transfer-token
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">45. What is a rebasing token?</font></b></summary>
+
+Rebase token is a type of ERC20 token that changes its total supply (by burning/minting tokens) to maintain a peg to a certain value, they are very similar to stablecoins in idea but not in implementation.
+
+_Reference:_ https://www.zenledger.io/blog/what-are-rebase-tokens-how-are-they-taxed/#:~:text=Rebase%20tokens%20are%20similar%20to,circulation%20or%20minting%20new%20tokens.
+
+</details>
+
+<br>
