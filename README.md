@@ -899,3 +899,134 @@ _Reference:_ https://www.zenledger.io/blog/what-are-rebase-tokens-how-are-they-t
 </details>
 
 <br>
+
+## Hard
+
+<details open>
+<summary><b><font size="+1">1. How does fixed point arithmetic represent numbers?</font></b></summary>
+
+It reserves one part of the bits to the integer part and another to the fractional part. IIIII.FFFFF
+
+_Reference:_ https://stackoverflow.com/a/7524916/12460603
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">2. What is an ERC20 approval frontrunning attack?</font></b></summary>
+
+If you set an allowance for an address to spend your tokens, you may be frontrun if you try to decrease or increase the allowance in the future. If the address sees your transaction in pending, it could frontrun you by spending all the tokens and then receiving another allowance that you just sent.
+
+_Reference:_ https://www.adrianhetman.com/unboxing-erc20-approve-issues/
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">3. What opcode accomplishes address(this).balance?</font></b></summary>
+
+`SELFBALANCE` - Get balance of currently executing account
+
+_Reference:_ https://www.evm.codes/#47?fork=shanghai
+
+</details>
+
+<br>
+<details open>
+<summary><b><font size="+1">4. How many arguments can a solidity event have?</font></b></summary>
+
+Non-anonymous events can have up to 3 parameters and anonymous events can have up to 4 parameters.
+
+_Reference:_ https://docs.soliditylang.org/en/v0.8.24/abi-spec.html#events
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">5. What is an anonymous Solidity event?</font></b></summary>
+
+Anonymous is an event type that doesn't store an event signature as the first parameter.
+
+_Reference:_ https://docs.soliditylang.org/en/v0.8.24/cheatsheet.html#modifiers
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">6. Under what circumstances can a function receive a mapping as an argument?</font></b></summary>
+
+If the function is private or internal and also mapping parameter is from storage.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+contract MappingContract {
+   function doStuff(mapping(uint256 => uint256) storage _mapping) internal{} // will work
+   function doStuff(mapping(uint256 => uint256) storage _mapping) external{} // will give you an error
+}
+```
+
+_Reference:_ https://ethereum.stackexchange.com/a/7757/99105
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">7. What is an inflation attack in ERC4626?</font></b></summary>
+
+ERC4626 is the vault where users can deposit their tokens and get share tokens in return. When you deposit tokens via standard function - you will get some amount of share tokens, but if you will just send them to the contract - you will get nothing. So the attack is simple:
+
+1. attacker sees a deposit from another user to the empty pool
+2. attacker deposits 1 token and get in return 1 share
+3. attacker deposits amount of token that the user is trying to deposit (10k for example)
+4. user transaction executed and he deposits 10k tokens.
+5. we have a formula: `shares_received = assets_deposited * totalSupply() / totalAssets();`. this means:
+
+`shares_received = 10,000 * 1 / 10,001 => sharesToReceive = 0.99990000999` and because solidity doesn't support fixed point numbers - user won't receive any shares in the end.
+
+_Reference:_ https://mixbytes.io/blog/overview-of-the-inflation-attack
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">8. How many arguments can a solidity function have?</font></b></summary>
+
+16, otherwise you will get "Stack is too deep" error.
+
+_Reference:_ https://docs.soliditylang.org/en/v0.8.24/introduction-to-smart-contracts.html#storage-memory-and-the-stack
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">9. How many storage slots does this use? uint64[] x = [1,2,3,4,5]? Does it differ from memory?</font></b></summary>
+
+uint64 takes 16 bytes, 1 slot has 32 bytes.
+
+1 slot for length
+
+- # 3 slots for elements (1,2), (3,4), (5)
+  4 slots in total
+
+_Reference:_ https://docs.soliditylang.org/en/v0.8.24/introduction-to-smart-contracts.html#storage-memory-and-the-stack
+
+</details>
+
+<br>
+
+<details open>
+<summary><b><font size="+1">10. Prior to the Shanghai upgrade, under what circumstances is returndatasize() more efficient than push zero?</font></b></summary>
+
+Before the Shangai upgrade it was cheaper to use the `RETURNDATASIZE` opcode (2 gas) to push 0 to the top of the stack than to use `PUSH1 0` (3 gas). With the Shangai upgrade EVM introduces a new opcode `PUSH0` which just pushes 0 to the top of the stack and costs 2 gas.
+
+_Reference:_ https://eips.ethereum.org/EIPS/eip-3855
+
+</details>
+
+<br>
