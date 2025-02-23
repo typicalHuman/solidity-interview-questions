@@ -1005,14 +1005,15 @@ _Reference:_ https://docs.soliditylang.org/en/v0.8.24/introduction-to-smart-cont
 <br>
 
 <details open>
-<summary><b><font size="+1">9. How many storage slots does this use? uint64[] x = [1,2,3,4,5]? Does it differ from memory?</font></b></summary>
+<summary><b><font size="+1">9. How many storage slots does this use? uint64[] x = [1, 2, 3, 4, 5]? Does it differ from memory?</font></b></summary>
 
-uint64 takes 16 bytes, 1 slot has 32 bytes.
+uint64 takes 8 bytes, 1 slot has 32 bytes.
 
 1 slot for length
 
-- # 3 slots for elements (1,2), (3,4), (5)
-  4 slots in total
+2 slots for elements (1, 2, 3, 4), (5)
+
+3 slots in total
 
 _Reference:_ https://docs.soliditylang.org/en/v0.8.24/introduction-to-smart-contracts.html#storage-memory-and-the-stack
 
