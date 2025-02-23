@@ -753,9 +753,7 @@ _Reference_: https://stackoverflow.com/questions/72752086/how-many-state-bytes-w
 <details open>
 <summary><b><font size="+1">35. Which operations give a partial refund of gas?</font></b></summary>
 
-1 slot size = 32 bytes, address - 20 bytes, we have 12 free bytes - 8 \* 12 = 96, uint96.max = 79228162514264337593543950335
-
-_Reference_: https://stackoverflow.com/questions/72752086/how-many-state-bytes-will-contract-address-variable-consume-in-solidity
+Freeing Storage Slots
 
 </details>
 
